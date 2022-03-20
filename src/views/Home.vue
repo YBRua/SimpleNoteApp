@@ -1,16 +1,22 @@
 <template>
   <div class="container">
-    <rounded-button msg="Simple Note"></rounded-button>
-    <div class="footer">A NIMODev Tutorial Project</div>
+    <!-- <rounded-button msg="Simple Note"></rounded-button>
+    <div class="footer">A NIMODev Tutorial Project</div> -->
+    <!-- <login></login> -->
+    <register></register>
   </div>
 </template>
 
 <script>
 import RoundedButton from "../components/RoundedButton.vue";
+import Login from "../components/auth/Login.vue";
+import Register from "../components/auth/Register.vue";
 
 export default {
   components: {
     RoundedButton,
+    Register,
+    Login,
   },
 };
 </script>
