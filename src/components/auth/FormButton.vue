@@ -6,11 +6,10 @@
 export default {
   props: {
     value: String,
-    forbidden: Boolean
+    forbidden: Boolean,
   },
 };
 </script>
 
 <style lang="scss">
-
 </style>

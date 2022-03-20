@@ -16,11 +16,11 @@
 </style>
 
 <script>
-import RoundedButton from './components/RoundedButton.vue';
+import RoundedButton from "./components/RoundedButton.vue";
 
 export default {
   components: {
-    RoundedButton
-  }
-}
+    RoundedButton,
+  },
+};
 </script>
