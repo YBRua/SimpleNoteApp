@@ -44,6 +44,14 @@ export default {
         this.state = "";
       }
     },
+
+    valid() {
+      if (this.hasContent) {
+        this.state = this.valid ? "valid" : "error";
+      } else {
+        this.state = "";
+      }
+    },
   },
 };
 </script>
