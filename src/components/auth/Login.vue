@@ -38,6 +38,7 @@
 import TextInput from "./TextInput.vue";
 import FormButton from "./FormButton.vue";
 import { postForm } from "./auth.js";
+import { URL_BASE } from "@/config.js";
 
 export default {
   data() {
@@ -82,11 +83,13 @@ export default {
         evt.preventDefault();
 
         const formContent = document.getElementById("login-form");
-        postForm("//192.168.1.111:8192/auth/login", formContent).then((res) => {
-          this.handleResponse(res);
-        });
+        postForm(`${URL_BASE}/auth/login`, formContent)
+          .then((res) => {
+            this.handleResponse(res);
+          })
+          .catch((err) => this.responseFail());
       } catch (err) {
-        console.log(err);
+        this.responseFail();
         return false;
       }
       return false;

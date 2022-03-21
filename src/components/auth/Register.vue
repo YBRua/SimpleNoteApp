@@ -59,6 +59,7 @@
 import FormButton from "./FormButton.vue";
 import TextInput from "./TextInput.vue";
 import { postForm } from "./auth.js";
+import { URL_BASE } from "@/config.js";
 
 export default {
   components: {
@@ -130,10 +131,7 @@ export default {
         evt.preventDefault();
 
         const formContent = document.getElementById("register-form");
-        const request = postForm(
-          "//192.168.1.111:8192/auth/register",
-          formContent
-        );
+        const request = postForm(`${URL_BASE}/auth/register`, formContent);
         request.then((res) => {
           this.handleResponse(res);
         });
