@@ -1,6 +1,11 @@
 <template>
   <div class="rounded-btn-container">
-    <div @click="onClick()" @mouseover="onMouseOver()" @mouseleave="onMouseLeave()" class="rounded-button">
+    <div
+      @click="onClick()"
+      @mouseover="onMouseOver()"
+      @mouseleave="onMouseLeave()"
+      class="rounded-button"
+    >
       <div>{{ _msg }}</div>
     </div>
   </div>
@@ -10,28 +15,29 @@
 export default {
   props: {
     msg: String,
-    routerLink: String
+    msgOnHover: String,
+    routerLink: String,
   },
 
   data() {
-     return {
-       _msg: this.msg,
-       hovered: false
-     }
+    return {
+      _msg: this.msg,
+      hovered: false,
+    };
   },
 
   methods: {
     onMouseOver() {
-      this._msg = "Get Started";
+      this._msg = this.msgOnHover;
     },
-    
+
     onMouseLeave() {
       this._msg = this.msg;
     },
 
     onClick() {
-      this.$router.push('auth')
-    }
+      this.$router.push("auth");
+    },
   },
 };
 </script>
@@ -57,14 +63,13 @@ export default {
 
   div {
     width: 100%;
-  
+
     font-size: 5rem;
     text-align: center;
-    
+
     margin: 0;
     padding-top: 2rem;
     padding-bottom: 2rem;
-    
   }
 
   &:hover {

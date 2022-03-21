@@ -6,6 +6,7 @@
     :placeholder="placeholder"
     :value="content"
     @input="$emit('update:content', $event.target.value)"
+    @blur="checkInput()"
   />
 </template>
 
@@ -34,20 +35,21 @@ export default {
   },
   watch: {
     content() {
+      this.checkInput();
+    },
+
+    valid() {
+      this.checkInput();
+    },
+  },
+  methods: {
+    checkInput() {
       if (this.hasContent) {
         if (this.valid !== null) {
           this.state = this.valid ? "valid" : "error";
         } else {
           this.state = "has-content";
         }
-      } else {
-        this.state = "";
-      }
-    },
-
-    valid() {
-      if (this.hasContent) {
-        this.state = this.valid ? "valid" : "error";
       } else {
         this.state = "";
       }
@@ -61,9 +63,7 @@ export default {
   width: 15rem;
 
   padding: 0.75rem 0.25rem 0.75rem 0.25rem;
-
   border: 0;
-
   background-color: #f5f5f5;
 
   &.has-content {

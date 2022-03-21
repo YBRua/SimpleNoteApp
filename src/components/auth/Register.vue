@@ -2,17 +2,17 @@
   <div class="titled-form-container">
     <h1>Register</h1>
     <div class="form-hrule"></div>
-    <form class="simple-form" action="">
+    <form id="register-form" class="simple-form" @submit="postRegister">
       <text-input
         type="text"
-        id="user-name"
+        name="username"
         placeholder="User Name"
         v-model:content="userName"
       />
       <text-input
         :class="{ error: isEmailInvalid }"
         type="text"
-        id="email"
+        name="email"
         placeholder="Email"
         v-model:content="email"
         :valid="!isEmailInvalid && email.length > 0"
@@ -20,7 +20,7 @@
       <text-input
         :class="{ error: isPasswordInconsistent }"
         type="password"
-        id="password"
+        name="password"
         placeholder="Password"
         v-model:content="password"
         :valid="!isPasswordInconsistent && password.length > 0"
@@ -28,7 +28,7 @@
       <text-input
         :class="{ error: isPasswordInconsistent }"
         type="password"
-        id="confirm-password"
+        name="confirm-password"
         placeholder="Confirm Password"
         v-model:content="confirmPassword"
         :valid="!isPasswordInconsistent && confirmPassword.length > 0"
@@ -38,6 +38,12 @@
           Inconsistent Password
         </div>
         <div class="error-prompt" v-if="isEmailInvalid">Invalid Email</div>
+        <div class="error-prompt" v-if="isRegisterFailed">
+          Registration Failed. Please Try Again.
+        </div>
+        <div class="ok-prompt" v-if="isRegisterSuccessful">
+          Registered Successfully
+        </div>
       </div>
       <input
         type="submit"
@@ -52,6 +58,7 @@
 <script>
 import FormButton from "./FormButton.vue";
 import TextInput from "./TextInput.vue";
+import { postForm } from "./auth.js";
 
 export default {
   components: {
@@ -65,6 +72,9 @@ export default {
       email: "",
       password: "",
       confirmPassword: "",
+
+      isRegisterSuccessful: false,
+      isRegisterFailed: false,
 
       inputClass: "input",
     };
@@ -94,6 +104,44 @@ export default {
         !this.isEmailInvalid > 0 &&
         !this.isPasswordInconsistent
       );
+    },
+  },
+  methods: {
+    handleResponse(res) {
+      if (res.status !== 201) {
+        this.responseFail(res);
+      } else {
+        this.responseOk(res);
+      }
+    },
+
+    responseOk(res) {
+      this.isRegisterSuccessful = true;
+      this.isRegisterFailed = false;
+    },
+
+    responseFail(res) {
+      this.isRegisterSuccessful = false;
+      this.isRegisterFailed = true;
+    },
+
+    postRegister(evt) {
+      try {
+        evt.preventDefault();
+
+        const formContent = document.getElementById("register-form");
+        const request = postForm(
+          "//192.168.1.111:8192/auth/register",
+          formContent
+        );
+        request.then((res) => {
+          this.handleResponse(res);
+        });
+      } catch (err) {
+        console.log(err);
+        return false;
+      }
+      return false;
     },
   },
 };

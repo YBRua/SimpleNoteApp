@@ -1,28 +1,22 @@
 <template>
-  <div class="container">
-    <!-- <rounded-button msg="Simple Note"></rounded-button>
-    <div class="footer">A NIMODev Tutorial Project</div> -->
-    <!-- <login></login> -->
-    <register></register>
+  <div class="home-container">
+    <rounded-button msg="Simple Note" msgOnHover="Get Started"></rounded-button>
+    <div class="home-footer">A NIMODev Tutorial Project</div>
   </div>
 </template>
 
 <script>
 import RoundedButton from "../components/RoundedButton.vue";
-import Login from "../components/auth/Login.vue";
-import Register from "../components/auth/Register.vue";
 
 export default {
   components: {
     RoundedButton,
-    Register,
-    Login,
   },
 };
 </script>
 
 <style lang="scss">
-.container {
+.home-container {
   height: 90vh;
   display: flex;
 
@@ -31,9 +25,9 @@ export default {
   justify-content: center;
 }
 
-.footer {
+.home-footer {
   margin-top: 2rem;
   font-size: 0.5rem;
-  color: gray;
+  color: #a3a3a3;
 }
 </style>
