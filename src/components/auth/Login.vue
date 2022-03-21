@@ -16,9 +16,7 @@
         v-model:content="password"
       />
       <div class="prompting-area">
-        <div class="error-prompt" v-if="isLoginFailed">
-          Incorrect Username or Password
-        </div>
+        <div class="error-prompt" v-if="isLoginFailed">Failed to Login</div>
         <div class="ok-prompt" v-if="isLoginSuccessful">
           Successfully Logged In
         </div>
@@ -26,8 +24,11 @@
       <input
         type="submit"
         value="Login"
-        :disabled="!isSubmissionReady"
-        :class="['form-btn', { disabled: !isSubmissionReady }]"
+        :disabled="!isSubmissionReady || isPending"
+        :class="[
+          'form-btn',
+          { disabled: !isSubmissionReady, pending: isPending },
+        ]"
       />
     </form>
     <div class="forgot-password" @click="forgotPassword">Forgot Password?</div>
@@ -48,6 +49,8 @@ export default {
 
       isLoginSuccessful: false,
       isLoginFailed: false,
+
+      isPending: false,
     };
   },
   components: {
@@ -71,15 +74,19 @@ export default {
     responseOk(res) {
       this.isLoginSuccessful = true;
       this.isLoginFailed = false;
+      this.isPending = false;
     },
 
     responseFail(res) {
       this.isLoginSuccessful = false;
       this.isLoginFailed = true;
+      this.isPending = false;
     },
 
     postLogin(evt) {
       try {
+        this.isPending = true;
+
         evt.preventDefault();
 
         const formContent = document.getElementById("login-form");
@@ -89,9 +96,11 @@ export default {
           })
           .catch((err) => this.responseFail());
       } catch (err) {
+        console.error(err);
         this.responseFail();
         return false;
       }
+
       return false;
     },
 

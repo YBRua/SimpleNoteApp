@@ -48,8 +48,11 @@
       <input
         type="submit"
         value="Register"
-        :disabled="!isSubmissionReady"
-        :class="['form-btn', { disabled: !isSubmissionReady }]"
+        :disabled="!isSubmissionReady || isPending"
+        :class="[
+          'form-btn',
+          { disabled: !isSubmissionReady, pending: isPending },
+        ]"
       />
     </form>
   </div>
@@ -76,6 +79,8 @@ export default {
 
       isRegisterSuccessful: false,
       isRegisterFailed: false,
+
+      isPending: false,
 
       inputClass: "input",
     };
@@ -119,24 +124,32 @@ export default {
     responseOk(res) {
       this.isRegisterSuccessful = true;
       this.isRegisterFailed = false;
+      this.isPending = false;
     },
 
     responseFail(res) {
       this.isRegisterSuccessful = false;
       this.isRegisterFailed = true;
+      this.isPending = false;
     },
 
     postRegister(evt) {
+      this.isPending = true;
       try {
         evt.preventDefault();
 
         const formContent = document.getElementById("register-form");
         const request = postForm(`${URL_BASE}/auth/register`, formContent);
-        request.then((res) => {
-          this.handleResponse(res);
-        });
+        request
+          .then((res) => {
+            this.handleResponse(res);
+          })
+          .catch((err) => {
+            this.responseFail();
+          });
       } catch (err) {
-        console.log(err);
+        console.error(err);
+        this.responseFail();
         return false;
       }
       return false;
